@@ -66,6 +66,3 @@ This is a Django-based website that allows users to upload workout plans and tra
 
 Contributions are welcome! If you have any suggestions or find any issues, please open an issue or submit a pull request.
 
-## License
-
-This project is licensed under the [MIT License](LICENSE).

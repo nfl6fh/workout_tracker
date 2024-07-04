@@ -19,4 +19,5 @@ from . import views
 
 urlpatterns = [
     path('', views.home, name='home'),
+    path('workout_calendar/', views.workout_calendar, name='workout_calendar'),
 ]
