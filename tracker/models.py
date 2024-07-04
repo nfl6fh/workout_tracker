@@ -12,15 +12,15 @@ class Workout(models.Model):
     distance = models.FloatField(default=1) # in meters, use props when displaying
     units = models.CharField(max_length=200, default='miles')
     calories = models.IntegerField(default=1)
-    notes = models.TextField(default='')
+    notes = models.TextField(default='', blank=True)
 
     user = models.ForeignKey('User', on_delete=models.CASCADE, default=1, related_name='workouts')
     plan = models.ForeignKey('Plan', on_delete=models.CASCADE, default=1, related_name='workouts')
     is_completed = models.BooleanField(default=False)
 
     # for more specific workout pieces
-    warmup = models.OneToOneField('Piece', on_delete=models.CASCADE, default=1, related_name='warmup')
-    cooldown = models.OneToOneField('Piece', on_delete=models.CASCADE, default=1, related_name='cooldown')
+    warmup = models.OneToOneField('Piece', on_delete=models.CASCADE, related_name='warmup', blank=True, null=True)
+    cooldown = models.OneToOneField('Piece', on_delete=models.CASCADE, related_name='cooldown', blank=True, null=True)
 
     # can be 'Lift', 'Run', 'Swim', 'Bike', 'Mobility', 'Row', 'Other'
     # possibly add support for more in the future
@@ -38,6 +38,10 @@ class Workout(models.Model):
     @property
     def distance_yards(self) -> float:
         return self.distance * 1.09361
+    
+    @property
+    def day(self):
+        return self.date.day
     
     def get_distance(self) -> float:
         if self.units == 'miles':
@@ -137,8 +141,8 @@ class User(models.Model):
     id = models.AutoField(primary_key=True, unique=True)
     name = models.CharField(max_length=200, default='User')
     email = models.EmailField(max_length=200, default='')
-    default_plan = models.OneToOneField('Plan', on_delete=models.CASCADE, default=1, related_name='default_user')
-    followers = models.ManyToManyField('User', related_name='following')
+    default_plan = models.OneToOneField('Plan', on_delete=models.CASCADE, related_name='default_user', null=True, blank=True)
+    followers = models.ManyToManyField('User', related_name='following', blank=True)
 
     def get_workouts(self):
         return self.workouts.all()
@@ -168,7 +172,7 @@ class Plan(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=200, default='Plan')
     description = models.TextField(max_length=200 ,default='')
-    user = models.ForeignKey('User', on_delete=models.CASCADE, default=1, related_name='plans')
+    user = models.ForeignKey('User', on_delete=models.CASCADE, default=1, related_name='plans', null=True)
 
     def get_planned_workouts(self):
         return self.planned_workouts.all()

@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect, render, reverse
 import datetime
+from .models import *
 
 # Create your views here.
 
@@ -13,6 +14,8 @@ def workout_calendar(request):
     now = datetime.datetime.now()
     current_month = now.strftime("%B")
     current_year = now.strftime("%Y")
+    current_month_num = now.month
+    print(current_month_num)
 
     # create a list of weeks in the current month where each week is a list of days, start each week on Sunday. Fill in the days of the previous month and next month as needed
     weeks = []
@@ -40,7 +43,8 @@ def workout_calendar(request):
         next_year = now.year + 1
     # fill in the days of the previous month
     for i in range(weekday):
-        week.append(num_days_prev_month - weekday + i + 1)
+        # week.append(num_days_prev_month - weekday + i + 1)
+        week.append(0)
     # fill in the days of the current month
     for i in range(1, num_days + 1):
         week.append(i)
@@ -49,6 +53,9 @@ def workout_calendar(request):
             week = []
     # fill in the days of the next month
     for i in range(1, 8-len(week)):
-        week.append(i)
+        week.append(0)
     weeks.append(week)
-    return render(request, 'tracker/workout_calendar.html', {'calendar': weeks, 'current_month': current_month, 'current_year': current_year})
+    # add filtering by user later
+    workouts = list(Workout.objects.filter(date__year=current_year, date__month=now.month).order_by('date'))
+    print(workouts)
+    return render(request, 'tracker/workout_calendar.html', {'calendar': weeks, 'current_month': current_month, 'current_year': current_year, 'workouts': workouts, 'current_month_num': current_month_num})

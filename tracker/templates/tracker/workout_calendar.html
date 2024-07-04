@@ -24,7 +24,17 @@
           {% for week in calendar %}
             <tr>
               {% for day in week %}
-                <td style="border: 1px solid #ddd; padding: 10px; height: 100px; width: 12.5%">{{ day }}</td>
+                <td style="border: 1px solid #ddd; padding: 10px; height: 100px; width: 12.5%">
+                    {% if day != 0 %}
+                    {{ day }} <br>
+                    {% for workout in workouts %}
+                    {% comment %} {{ workout.date.day }} {{ workout.date.month }} 1 {{ current_month_num }} 1 {% endcomment %}
+                      {% if workout.date.day == day and workout.date.month == current_month_num %}
+                        <a href="#">{{ workout }}</a>
+                      {% endif %}
+                    {% endfor %}
+                    {% endif %}
+                </td>
               {% endfor %}
             </tr>
           {% endfor %}
