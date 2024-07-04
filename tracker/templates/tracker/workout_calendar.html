@@ -1,29 +1,35 @@
 {% include './navbar.html' %}
-
-<div class="calendar">
-    <h2>{{ current_month }} {{current_year}}</h2>
-    <table>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Simple Calendar</title>
+  </head>
+  <body style="font-family: Arial, sans-serif; text-align: center;">
+    <div class="calendar" style="margin-left: 5%; margin-right: 5%; margin-top:2%">
+      <h2 class="text-center">{{ current_month }} {{ current_year }}</h2>
+      <table class="table">
         <thead>
-            <tr>
-                <th>Mon</th>
-                <th>Tue</th>
-                <th>Wed</th>
-                <th>Thu</th>
-                <th>Fri</th>
-                <th>Sat</th>
-                <th>Sun</th>
-            </tr>
+          <tr>
+            <th style="border: 1px solid #ddd; padding: 8px; background-color: #f2f2f2;">Mon</th>
+            <th style="border: 1px solid #ddd; padding: 8px; background-color: #f2f2f2;">Tue</th>
+            <th style="border: 1px solid #ddd; padding: 8px; background-color: #f2f2f2;">Wed</th>
+            <th style="border: 1px solid #ddd; padding: 8px; background-color: #f2f2f2;">Thu</th>
+            <th style="border: 1px solid #ddd; padding: 8px; background-color: #f2f2f2;">Fri</th>
+            <th style="border: 1px solid #ddd; padding: 8px; background-color: #f2f2f2;">Sat</th>
+            <th style="border: 1px solid #ddd; padding: 8px; background-color: #f2f2f2;">Sun</th>
+          </tr>
         </thead>
         <tbody>
-            {% for week in calendar %}
-                <tr>
-                    {% for day in week %}
-                        <td>{{ day }}</td>
-                    {% endfor %}
-                </tr>
-            {% endfor %}
+          {% for week in calendar %}
+            <tr>
+              {% for day in week %}
+                <td style="border: 1px solid #ddd; padding: 10px; height: 100px; width: 12.5%">{{ day }}</td>
+              {% endfor %}
+            </tr>
+          {% endfor %}
         </tbody>
-    </table>
-</div>
-    
-</div>
+      </table>
+    </div>
+  </body>
+</html>
